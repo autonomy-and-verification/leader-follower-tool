@@ -1,0 +1,20 @@
+((leader
+   (delta
+     ((state working) (out prepare) (state waiting))
+     ((state waiting) (in = 1 1 prepared) (state committing))
+     ((state waiting) (in >= 1 aborted) (state aborting))
+     ((state committing) (out commit) (state committed))
+     ((state aborting) (out abort) (state aborted)))
+   (initial (state working)))
+ (follower
+   (delta
+     ((state working) (in prepare) (state preparing))
+     ((state preparing) (out prepared) (state prepared))
+     ((state preparing) (out aborted) (state aborted))
+     ((state prepared) (in commit) (state committed))
+     ((state prepared) (in abort) (state aborted)))
+   (initial (state working)))
+ (property
+   (eventually 6
+     (or (= (# (state committed)) K)
+         (= (# (state aborted)) K)))))

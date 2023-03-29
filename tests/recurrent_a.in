@@ -1,0 +1,16 @@
+((leader
+   (delta
+     ((state q0) (in = 1 1 t0) (state q1))
+     ((state q0) (in = 1 1 t1) (state q2))
+     ((state q0) (in = 1 1 t2) (state q3)))
+   (initial (state q0)))
+ (follower
+   (delta
+     ((state q0) (out t0) (state q1))
+     ((state q1) (out t1) (state q2))
+     ((state q2) (out t0) (state q3))
+     ((state q3) (out t2) (state q4)))
+   (initial (state q0)))
+ (property
+   (eventually 8
+     (= 1 2))))
